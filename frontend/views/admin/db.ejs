@@ -1,0 +1,25 @@
+<%layout("layout/boilerplate")%>
+<h1>All Whisperers</h1>
+
+<div class="table-container">
+  <% if (users && users.length > 0) { %>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% users.forEach(user => { %>
+          <tr>
+            <td><%= user.name %></td>
+            <td><%= user.email %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <div class="no-users">No users found.</div>
+  <% } %>
+</div>
