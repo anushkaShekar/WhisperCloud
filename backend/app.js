@@ -19,7 +19,7 @@ app.use(express.static("../frontend/public"));
 app.use(express.urlencoded({ extended: true }));
 
 app.use(session({
-    secret: "some secret",
+    secret: "NUIKzAgaj0",
     resave: false,
     saveUninitialized: true,
     store: MongoStore.create({
@@ -27,7 +27,7 @@ app.use(session({
         collectionName: "sessions"
     }),
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24
+        maxAge: 1000 * 60 * 60 * 2
     }
 }))
 

@@ -53,6 +53,12 @@ router.get("/homepage", secureLogin, (req, res) => {
     })
 })
 
+// Destroy session
+router.get("/logout", (req, res) => {
+    req.session.destroy();
+    res.redirect("/login")
+})
+
 router.get("/signup",(req,res)=>{
     res.render("./user/signup",{
         title: "Sign Up | WhisperCloud"
