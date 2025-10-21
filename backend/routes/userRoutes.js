@@ -13,22 +13,24 @@ router.get("/login",(req,res)=>{
 router.post("/signin", async(req, res) => {
     try {
         const {email, password} = req.body
-        console.log(email)
-        const userData= await User.find({email: {$eq: email}})
-        console.log(userData.length)
+        const userData = await User.find({email: {$eq: email}})
 
         // Check if user's email is present in the database
         if (userData.length != 0) {
+            const userEmail = userData[0].email
             const userPassword = userData[0].password
+            const userName = userData[0].name
 
             // Check if the passwords match
             bcrypt.compare(password, userPassword, (err, data) => {
                 if (err) throw err
 
                 if (data) {
+                    req.session.email = userEmail
+                    req.session.name = userName
                     res.redirect("/homepage")
                 } else {
-                    return res.status(401).json({msg: "The inputted password did not mach the account holder's password. Please try again."})
+                    return res.status(401).json({msg: "The inputted password did not match the account holder's password. Please try again."})
                 }
             })
         } else {
@@ -40,7 +42,12 @@ router.post("/signin", async(req, res) => {
 
 })
 
-router.get("/homepage", (req, res) => {
+let secureLogin = (req, res, next) => {
+    if (!req.session.email || !req.session.name) return res.redirect("/login")
+    next()
+}
+
+router.get("/homepage", secureLogin, (req, res) => {
     res.render("./user/homepage", {
         title: "Homepage | WhisperCloud"
     })
